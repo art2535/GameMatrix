@@ -28,7 +28,10 @@ namespace GameMatrix
 
         private void RandomFill_Click(object sender, RoutedEventArgs e)
         {
-            if (!ParseMatrixDimensions()) return;
+            if (!ParseMatrixDimensions())
+            {
+                return;
+            }
             CreateMatrixGrid();
 
             Random rand = new Random();
@@ -39,6 +42,8 @@ namespace GameMatrix
                     matrixTextBoxes[i, j].Text = rand.Next(2, 11).ToString();
                 }
             }
+
+            SolveGame_Click(sender, e);
         }
 
         private bool ParseMatrixDimensions()
@@ -169,7 +174,9 @@ namespace GameMatrix
                 for (int j = 0; j < columns; j++)
                 {
                     if (matrix[i, j] < rowMin)
+                    {
                         rowMin = matrix[i, j];
+                    }
                 }
                 rowMins[i] = rowMin;
             }
@@ -181,7 +188,9 @@ namespace GameMatrix
                 for (int i = 0; i < rows; i++)
                 {
                     if (matrix[i, j] > colMax)
+                    {
                         colMax = matrix[i, j];
+                    }
                 }
                 colMaxs[j] = colMax;
             }
@@ -239,12 +248,18 @@ namespace GameMatrix
             int newRow = 0;
             for (int i = 0; i < rows; i++)
             {
-                if (rowDominated[i]) continue; // Пропускаем доминируемые строки
+                if (rowDominated[i])
+                {
+                    continue; // Пропускаем доминируемые строки
+                }
 
                 int newCol = 0;
                 for (int j = 0; j < columns; j++)
                 {
-                    if (colDominated[j]) continue; // Пропускаем доминируемые столбцы
+                    if (colDominated[j])
+                    {
+                        continue; // Пропускаем доминируемые столбцы
+                    }
 
                     reducedMatrix[newRow, newCol] = matrix[i, j];
                     newCol++;
@@ -266,9 +281,13 @@ namespace GameMatrix
             for (int j = 0; j < columns; j++)
             {
                 if (matrix[i, j] > matrix[k, j])
+                {
                     return false; // Если хотя бы один элемент в строке i больше соответствующего элемента в строке k
+                }
                 if (matrix[i, j] < matrix[k, j])
+                {
                     strictlyLess = true; // Если хотя бы один элемент в строке i меньше соответствующего элемента в строке k
+                }
             }
             return strictlyLess;
         }
@@ -280,19 +299,39 @@ namespace GameMatrix
             for (int i = 0; i < rows; i++)
             {
                 if (matrix[i, j] > matrix[i, l])
+                {
                     return false; // Если хотя бы один элемент в столбце j больше соответствующего элемента в столбце l
+                }
                 if (matrix[i, j] < matrix[i, l])
+                {
                     strictlyLess = true; // Если хотя бы один элемент в столбце j меньше соответствующего элемента в столбце l
+                }
             }
             return strictlyLess;
         }
 
         private string SolveTwoByTwoMatrix(int[,] matrix)
         {
-            // Пример вычисления вероятностей для смешанных стратегий
-            int a = matrix[0, 0], b = matrix[0, 1], c = matrix[1, 0], d = matrix[1, 1];
-            double p = (double)(d - b) / (a - b - c + d);
-            double q = (double)(d - c) / (a - b - c + d);
+            int a = matrix[0, 0];
+            int b = matrix[0, 1];
+            int c = matrix[1, 0];
+            int d = matrix[1, 1];
+
+            int denominator = a - b - c + d;
+            if (denominator == 0)
+            {
+                return "Решение в смешанных стратегиях невозможно, так как знаменатель равен нулю. Используйте чистые стратегии.";
+            }
+
+            double p = (double)(d - b) / denominator;
+            double q = (double)(d - c) / denominator;
+
+            // Проверка на допустимые значения вероятностей
+            if (p < 0 || p > 1 || q < 0 || q > 1)
+            {
+                return "Решение в смешанных стратегиях невозможно, так как вероятности находятся вне допустимого диапазона [0, 1].";
+            }
+
             return $"Игра решена в смешанных стратегиях:\nИгрок A: p = {p:F2}, 1-p = {(1 - p):F2}\nИгрок B: q = {q:F2}, 1-q = {(1 - q):F2}\n";
         }
 
@@ -305,10 +344,14 @@ namespace GameMatrix
                 for (int i = 0; i < rows; i++)
                 {
                     if (matrix[i, j] > colMax)
+                    {
                         colMax = matrix[i, j];
+                    }
                 }
                 if (colMax < minimax)
+                {
                     minimax = colMax;
+                }
             }
             return minimax;
         }
@@ -322,10 +365,14 @@ namespace GameMatrix
                 for (int j = 0; j < columns; j++)
                 {
                     if (matrix[i, j] < rowMin)
+                    {
                         rowMin = matrix[i, j];
+                    }
                 }
                 if (rowMin > maximin)
+                {
                     maximin = rowMin;
+                }
             }
             return maximin;
         }

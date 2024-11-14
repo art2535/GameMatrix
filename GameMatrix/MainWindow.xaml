@@ -7,22 +7,37 @@
         mc:Ignorable="d"
         Title="Решение матричных игр" Height="650" Width="800">
     <Grid>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
-            <TextBlock Text="Введите размерность матрицы (m x n):" FontWeight="Bold" Margin="0 0 0 10"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center"
+                    VerticalAlignment="Top" Margin="10">
+            <TextBlock Text="Введите размерность матрицы (m x n):"
+                       FontWeight="Bold" Margin="0 0 0 10"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBox x:Name="RowsInput" Width="50" Margin="5"/>
                 <TextBox x:Name="ColumnsInput" Width="50" Margin="5"/>
             </StackPanel>
-
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 10 0 0">
-                <Button Content="Заполнить вручную" Click="ManualFill_Click" Width="150" Margin="5"/>
-                <Button Content="Заполнить случайно" Click="RandomFill_Click" Width="150" Margin="5"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                        Margin="0 10 0 0">
+                <Button Content="Заполнить вручную" Click="ManualFill_Click"
+                        Width="150" Margin="5"/>
+                <Button Content="Заполнить случайно" Click="RandomFill_Click"
+                        Width="150" Margin="5"/>
             </StackPanel>
 
-            <UniformGrid x:Name="MatrixGrid" Rows="1" Columns="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+            <UniformGrid x:Name="MatrixGrid" Rows="1" Columns="1"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                         Margin="10" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
 
-            <Button Content="Решить игру" Click="SolveGame_Click" Width="150" Margin="5" HorizontalAlignment="Center"/>
-
+            <Button Content="Решить игру" Click="SolveGame_Click" Width="150"
+                    Margin="5" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2">
             <TextBlock Text="Результаты:" FontWeight="Bold" Margin="10 10 10 5"/>
             <TextBlock x:Name="GameResults" Margin="5"/>
         </StackPanel>
